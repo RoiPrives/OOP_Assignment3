@@ -1,6 +1,7 @@
-package Model.Utils.Generators;
+package Utils.Generators;
 
-public class FixedGenerator implements Generator{
+
+public class FixedGenerator implements Generator {
 
     @Override
     public int generate(int max) {

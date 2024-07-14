@@ -1,4 +1,4 @@
-package Model.Utils.Generators;
+package Utils.Generators;
 
 public interface Generator {
     public int generate(int max);

@@ -1,5 +1,8 @@
 package Model.Tiles;
 
+import Model.Tiles.Units.Unit;
+import Utils.Position;
+
 public class Wall extends Tile{
     public static final char WALL_TILE = '#';
 
@@ -8,4 +11,9 @@ public class Wall extends Tile{
     }
 
 
+    @Override
+    public Position accept(Unit unit) {
+
+        return unit.visit(this);
+    }
 }
