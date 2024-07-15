@@ -6,10 +6,11 @@ import Model.Tiles.Units.Enemies.Monster;
 import Model.Tiles.Units.Enemies.Trap;
 import Model.Tiles.Units.Players.Player;
 import Model.Tiles.Wall;
+import Utils.Callbacks.DeathCallbackEnemy;
+import Utils.Callbacks.DeathCallbackPlayer;
 import Utils.Callbacks.MessageCallback;
 import Utils.Generators.Generator;
 import Utils.Position;
-import Utils.Callbacks.DeathCallback;
 import java.util.Arrays;
 import Model.Tiles.Units.Players.Warrior;
 import Model.Tiles.Units.Players.Mage;
@@ -22,7 +23,7 @@ public class TileFactory {
     private Player player;
 
     private static final List<Supplier<Player>> playerTypes = Arrays.asList(
-            () -> new Warrior("Jon Snow", 300, 30, 4, 3),
+            () -> new Warrior("Jon Snow", 300, 99999999, 4, 3),
             () -> new Warrior("The Hound", 400, 20, 6, 5),
             () -> new Mage("Melisandre", 100, 5, 1, 300, 30, 15, 5, 6),
             () -> new Mage("Thoros of Myr", 250, 25, 4, 150, 20, 20, 3, 4),
@@ -31,7 +32,7 @@ public class TileFactory {
     );
 
     private static final Map<Character, Supplier<Enemy>> enemyTypes = Map.ofEntries(
-            Map.entry('s', () -> new Monster('s', "Lannister Soldier", 80, 8, 3, 3, 25)),
+            Map.entry('s', () -> new Monster('s', "Lannister Soldier", 80, 5000, 3, 3, 25)),
             Map.entry('k', () -> new Monster('k', "Lannister Knight", 200, 14, 8, 4, 50)),
             Map.entry('q', () -> new Monster('q', "Queen's Guard", 400, 20, 15, 5, 100)),
             Map.entry('z', () -> new Monster('z', "Wight", 600, 30, 15, 3, 100)),
@@ -49,9 +50,9 @@ public class TileFactory {
     public TileFactory(){
     }
 
-    public Player producePlayer(Position pos, int playerId, Generator generator, MessageCallback messageCallback){
+    public Player producePlayer(Position pos, int playerId, Generator generator, MessageCallback messageCallback, DeathCallbackPlayer deathCallbackPlayer){
         this.player = playerTypes.get(playerId - 1).get();
-        this.player.initialize(pos, generator, this.player.getDeathCallback(), messageCallback);
+        this.player.initialize(pos, generator, deathCallbackPlayer, messageCallback);
         return this.player;
     }
 
@@ -59,9 +60,9 @@ public class TileFactory {
         return this.player;
     }
 
-    public Enemy produceEnemy(char tile, Position position, Generator generator, MessageCallback messageCallback){
+    public Enemy produceEnemy(char tile, Position position, Generator generator, MessageCallback messageCallback, DeathCallbackEnemy deathCallbackEnemy){
         Enemy enemy = enemyTypes.get(tile).get();
-        enemy.initialize(position, generator, enemy.getDeathCallback(), messageCallback);
+        enemy.initialize(position, generator, deathCallbackEnemy, messageCallback);
         return enemy;
     }
 

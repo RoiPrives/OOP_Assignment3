@@ -1,7 +1,8 @@
 package Model.Tiles.Units.Players;
 import Model.Tiles.Units.Enemies.Enemy;
 import Model.Tiles.Units.Unit;
-import Utils.Callbacks.DeathCallback;
+//import Utils.Callbacks.DeathCallback;
+import Utils.Callbacks.DeathCallbackPlayer;
 import Utils.Callbacks.MessageCallback;
 import Utils.Generators.Generator;
 import Utils.Position;
@@ -15,6 +16,7 @@ public abstract class Player extends Unit {
     public static final char PLAYER_TILE = '@';
     protected int experience;
     protected int level;
+    private DeathCallbackPlayer deathCallback;
 
     private static final int EXPERIENCE_TO_LEVEL_UP = 50;
     private static final int INCREASE_HEALTH_POOL = 10;
@@ -29,13 +31,17 @@ public abstract class Player extends Unit {
             'q', this::doNothing
     );
 
-    public Player(String name, int healthPool, int attack, int defense) {
+    public Player(String name, int healthPool, int attack, int defense){//, DeathCallbackPlayer deathCallback) {
         super(PLAYER_TILE, name, healthPool, attack, defense);
         this.experience = 0;
         this.level = 1;
     }
 
-    public abstract Position castAbility(List<Enemy> enemies);
+    //public abstract Position castAbility(List<Enemy> enemies);
+    public Position castAbility(List<Enemy> enemies){
+        messageCallback.send("specialAbility");
+        return this.position;
+    }
 
 
     public void addExperience(int experience) {
@@ -48,10 +54,6 @@ public abstract class Player extends Unit {
         return actions.getOrDefault(actionChar, () -> this.castAbility(enemies)).get();
     }
 
-
-    public Position doNothing(){
-        return this.position;
-    }
 
     @Override
     public Position accept(Unit unit) {
@@ -76,8 +78,9 @@ public abstract class Player extends Unit {
         this.defense += INCREASE_DEFENSE * level;
     }
 
-    public Player initialize(Position position, Generator generator, DeathCallback deathCallback, MessageCallback messageCallback) {
-        super.initialize(position, generator, deathCallback, messageCallback);
+    public Player initialize(Position position, Generator generator, DeathCallbackPlayer deathCallback, MessageCallback messageCallback) {
+        super.initialize(position, generator, messageCallback);
+        this.deathCallback = deathCallback;
         return this;
     }
 
@@ -88,8 +91,10 @@ public abstract class Player extends Unit {
     public Position visit(Enemy enemy){
         combat(enemy);
         if(!enemy.alive()) {
+            //this.position.setPosition(enemy.getPosition());
+            this.swapPositions(enemy);
             addExperience(enemy.getExperience());
-            //enemy.onDeath();
+            return enemy.getPosition();
         }
         return this.position;
     }
@@ -98,13 +103,18 @@ public abstract class Player extends Unit {
         deathCallback.onDeath(this);
     }
 
-    public DeathCallback getDeathCallback(){
-        return this::playerDeath;
-    }
+//    public DeathCallbackPlayer getDeathCallback(){
+//        return this::playerDeath;
+//    }
 
     @Override
     public String toString(){
-        return super.toString() + "  " + level;
+        return super.toString() + " level :" + "  " + level;
+    }
+
+    @Override
+    public void notifyDeath(){
+        deathCallback.onDeath(this);
     }
 
 }

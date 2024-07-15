@@ -46,6 +46,12 @@ public class Warrior extends Player{
         defense += INCREASE_DEFENSE * level;
         health.fillHealthPool();
     }
+    @Override
+    public Position tick(char actionChar, List<Enemy> enemies) {
+        Position pos = super.tick(actionChar ,enemies);
+        remainingCooldown = remainingCooldown -1;
+        return pos;
+    }
 
     @Override
     public String toString(){

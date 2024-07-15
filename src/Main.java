@@ -1,4 +1,6 @@
 import Model.Game.Game;
+import Model.Tiles.Units.Enemies.Enemy;
+import Model.Tiles.Units.Players.Player;
 import Utils.Generators.FixedGenerator;
 import View.CLI;
 
@@ -9,5 +11,7 @@ public class Main {
         CLI cli = new CLI();
         Game game = new Game(args[0], new FixedGenerator(), cli.getMessageCallback(), cli.getInputCallback());
         game.runGame();
+        //Game game = new Game(args[0], new FixedGenerator(), cli.getMessageCallback(), cli.getInputCallback());
+        //game.runGame();
     }
 }

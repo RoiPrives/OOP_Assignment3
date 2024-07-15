@@ -4,12 +4,13 @@ import Model.Tiles.Tile;
 import Model.Tiles.Units.Enemies.Enemy;
 import Model.Tiles.Units.Players.Player;
 import Model.Tiles.Wall;
-import Utils.Callbacks.DeathCallback;
 import Utils.Health;
 import Utils.Position;
 import Utils.Callbacks.MessageCallback;
 import Utils.Generators.Generator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 public abstract class Unit extends Tile {
@@ -19,9 +20,15 @@ public abstract class Unit extends Tile {
     protected int attack;
     protected int defense;
     protected Generator generator;
-    protected DeathCallback deathCallback;
+    //protected DeathCallback deathCallback;
     protected MessageCallback messageCallback;
-    protected boolean alive;
+    protected List<Supplier<Position>> moves = List.of(
+            this::moveLeft,
+            this::moveRight,
+            this::moveUp,
+            this::moveDown,
+            this::doNothing
+    );
 
     public Unit(char tile, String name, int healthPool, int attack, int defense){
         super(tile);
@@ -46,10 +53,13 @@ public abstract class Unit extends Tile {
         return new Position(this.position.getX() + 1, this.position.getY());
     }
 
+    public Position doNothing(){
+        return this.position;
+    }
 
-    public Unit initialize(Position position, Generator generator, DeathCallback deathCallback, MessageCallback messageCallback){
+
+    public Unit initialize(Position position, Generator generator,  MessageCallback messageCallback){
         super.initialize(position);
-        this.deathCallback = deathCallback;
         this.generator = generator;
         this.messageCallback = messageCallback;
         return this;
@@ -95,18 +105,16 @@ public abstract class Unit extends Tile {
     public void takeDamage(int damage){
         health.takeDamage(damage);
         if(!alive()) {
-            deathCallback.onDeath(this);
+            notifyDeath();
         }
     }
 
-    public abstract void handleDeath();
+    public abstract void notifyDeath();
 
     /*public void onDeath(){
         deathCallback.onDeath();
     }
      */
-
-    public abstract DeathCallback getDeathCallback();
 
     @Override
     public String toString() {

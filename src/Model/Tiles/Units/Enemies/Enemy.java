@@ -1,15 +1,18 @@
 package Model.Tiles.Units.Enemies;
 import Model.Tiles.Units.Players.Player;
 import Model.Tiles.Units.Unit;
-import Utils.Callbacks.DeathCallback;
+import Utils.Callbacks.DeathCallbackEnemy;
+import Utils.Callbacks.DeathCallbackPlayer;
 import Utils.Callbacks.MessageCallback;
 import Utils.Generators.Generator;
 import Utils.Position;
 
 
+
 public abstract class Enemy extends Unit {
 
     protected int experience;
+    private DeathCallbackEnemy deathCallback;
 
     public Enemy(char tile, String name, int healthPool, int attack, int defense) {
         super(tile, name, healthPool, attack, defense);
@@ -19,10 +22,10 @@ public abstract class Enemy extends Unit {
         return this.experience;
     }
 
-    @Override
-    public DeathCallback getDeathCallback() {
-        return this::enemyDeath;
-    }
+
+//    public DeathCallbackEnemy getDeathCallback() {
+//        return this::enemyDeath;
+//    }
 
     @Override
     public String toString(){
@@ -35,14 +38,17 @@ public abstract class Enemy extends Unit {
     }
 
 
-    public void enemyDeath(Unit unit){
+    /*public void enemyDeath(Unit unit){
         deathCallback.onDeath(this);
         // some more things
     }
 
+     */
 
-    public Enemy initialize(Position position, Generator generator, DeathCallback deathCallback, MessageCallback messageCallback) {
-        super.initialize(position, generator, deathCallback, messageCallback);
+
+    public Enemy initialize(Position position, Generator generator, DeathCallbackEnemy deathCallback, MessageCallback messageCallback) {
+        super.initialize(position, generator, messageCallback);
+        this.deathCallback = deathCallback;
         return this;
     }
 
@@ -50,12 +56,19 @@ public abstract class Enemy extends Unit {
         return this.position;
     }
 
+    @Override
+    public void notifyDeath() {
+        deathCallback.onDeath(this);
+    }
+
+    public abstract Position tick(Position playerPos);
+
 
 
     public Position visit(Player player){
         combat(player);
-        if(!player.alive())
-            player.onDeath();
+        //if(!player.alive())
+            //player.notifyDeath();
         return this.position;
     }
 }

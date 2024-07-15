@@ -1,9 +1,12 @@
 package Model.Game;
-import Control.Initializers.LevelInitializer;
-import Utils.Callbacks.DeathCallback;
+//import Control.Initializers.LevelInitializer;
+import Model.Tiles.Units.Enemies.Enemy;
+import Model.Tiles.Units.Players.Player;
+//import Utils.Callbacks.DeathCallback;
 import Utils.Callbacks.InputCallback;
 import Utils.Callbacks.MessageCallback;
 import Utils.Generators.Generator;
+import Utils.Position;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,7 +18,7 @@ import java.util.List;
 
 public class Game {
     //private List<Board> boards;
-    private LevelInitializer levelInitializer;
+    //private LevelInitializer levelInitializer;
     private final String levelsPath;
     private final MessageCallback messageCallback;
     private final InputCallback inputCallback;
@@ -33,10 +36,15 @@ public class Game {
     }
 
     public void runGame(){
+        //Board board = new Board();
+        //board.initBoard();
+        //Player player = new Player("player", 20, 20, 20).initialize(new Position(0, 0), generator, board.getDeathCallbackPlayer(), messageCallback);
+        //Enemy enemy = new Enemy('a', "enemy", 20, 20, 20).initialize(new Position(1, 0), generator, board.getDeathCallbackEnemy(), messageCallback);
+        //player.takeDamage(40);
+        //enemy.takeDamage(40);
         // print menu and let player choose character
         int playerId = choosePlayer(PLAYERS_COUNT);
-        //levelInitializer = new LevelInitializer(playerId, generator, deathCallback, messageCallback);
-        levelInitializer = new LevelInitializer(playerId, generator, messageCallback);
+       //levelInitializer = new LevelInitializer(playerId, generator, deathCallback, messageCallback);//levelInitializer = new LevelInitializer(playerId, generator, messageCallback);
         Path path = Paths.get(levelsPath);
         try {
             Files.list(path)
