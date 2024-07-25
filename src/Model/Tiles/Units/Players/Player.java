@@ -91,10 +91,8 @@ public abstract class Player extends Unit {
     public Position visit(Enemy enemy){
         combat(enemy);
         if(!enemy.alive()) {
-            //this.position.setPosition(enemy.getPosition());
             this.swapPositions(enemy);
             addExperience(enemy.getExperience());
-            return enemy.getPosition();
         }
         return this.position;
     }
@@ -102,10 +100,6 @@ public abstract class Player extends Unit {
     public void playerDeath(Unit unit){
         deathCallback.onDeath(this);
     }
-
-//    public DeathCallbackPlayer getDeathCallback(){
-//        return this::playerDeath;
-//    }
 
     @Override
     public String toString(){
@@ -116,5 +110,4 @@ public abstract class Player extends Unit {
     public void notifyDeath(){
         deathCallback.onDeath(this);
     }
-
 }

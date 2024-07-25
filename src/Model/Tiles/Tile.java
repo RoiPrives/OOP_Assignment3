@@ -20,8 +20,8 @@ public abstract class Tile {
 
     public void swapPositions(Tile toSwap) {
         Position temp = new Position(toSwap.position);
-        toSwap.position.setPosition(this.position);
-        this.position.setPosition(temp);
+        toSwap.position = new Position(this.position);
+        this.position = new Position(temp);
         //System.out.println("hi");
         //toSwap.position = this.position;
         //this.position = temp;

@@ -1,20 +1,11 @@
 package Model.Game;
-//import Control.Initializers.LevelInitializer;
-import Model.Tiles.Units.Enemies.Enemy;
-import Model.Tiles.Units.Players.Player;
-//import Utils.Callbacks.DeathCallback;
 import Utils.Callbacks.InputCallback;
 import Utils.Callbacks.MessageCallback;
 import Utils.Generators.Generator;
-import Utils.Position;
-
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
 
 public class Game {
     //private List<Board> boards;
@@ -52,9 +43,10 @@ public class Game {
                     .forEach(file -> {
                         Level level = new Level(playerId, file.toAbsolutePath().toString(), generator, messageCallback, inputCallback);
                         level.initLevel();
-                        level.start();
+                        if(!level.start())
+                            throw new RuntimeException("OVER");
                     });
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

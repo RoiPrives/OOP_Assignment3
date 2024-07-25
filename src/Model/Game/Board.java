@@ -39,7 +39,7 @@ public class Board {
 
     public void enemyDeath(Enemy enemy){
         System.out.println("Enemy death " + enemy.toString());
-        board.put(enemy.getPosition(), new EmptyTile().initialize(enemy.getPosition()));
+        board.put(enemy.getPosition(), new EmptyTile().initialize(this.player.getPosition()));
         enemies.remove(enemy);
     }
 
@@ -52,10 +52,10 @@ public class Board {
     }
 
     public void initBoard(List<Tile> tiles, Player player, List<Enemy> enemies, int width){
-        this.board = new HashMap<>();
+        this.board = new TreeMap<>();
         for (Tile tile : tiles) {
-            board.put(tile.getPosition(), tile);
-            //board.put(new Position(tile.getPosition()), tile);
+            //board.put(tile.getPosition(), tile);
+            board.put(new Position(tile.getPosition()), tile);
         }
         this.player = player;
         this.enemies = enemies;
@@ -71,32 +71,27 @@ public class Board {
     }
 
     public boolean tick(char userAction){
-        Position playerPosition = new Position(player.getPosition().getX(), player.getPosition().getY());
-        //board.remove(playerPosition);
-        //this.player.getPosition().setPosition(new Position(1000, 1000));
-        //this.enemies.get(0).getPosition().setPosition(new Position(1000, 1000));
-        Position newPos = this.player.tick(userAction, this.enemies);
-        board.remove(playerPosition);
-        Tile removed = board.remove(newPos);
-        Tile newTile = this.board.get(newPos);
-        Position finalPos = this.player.interact(newTile);
-        board.put(finalPos, player);
-        if(!newPos.equals(finalPos))
-            board.put(newPos, removed);
-        else
-            board.put(finalPos, newTile);
-        //Tile tileInNewPos = this.board.get(newPos);
-        //this.board.put(newPos, player);
-        //this.board.put(playerPosition, tileInNewPos);
+        playerTick(userAction);
         for (int i = 0; i < enemies.size() && !over; i++) {
-            //Position enemyPos = new Position(enemies.get(i).getPosition());
-            //newPos = enemies.get(i).tick(player.getPosition());
-            //newPos = enemies.get(i).interact(this.board.get(newPos));
-            //tileInNewPos = this.board.get(newPos);
-            //this.board.put(newPos, enemies.get(i));
-            //this.board.put(enemyPos, tileInNewPos);
+            enemyTick(enemies.get(i));
         }
         return over;
+    }
+
+    public void playerTick(char userAction){
+        Position playerPosition = new Position(player.getPosition());
+        Position newPos = this.player.tick(userAction, this.enemies);
+        Position finalPos = this.player.interact(this.board.get(newPos));
+        board.put(playerPosition, board.get(finalPos));
+        board.put(finalPos, this.player);
+    }
+
+    public void enemyTick(Enemy enemy){
+        Position enemyPos = new Position(enemy.getPosition());
+        Position newPos = enemy.tick(this.player.getPosition());
+        Position finalPos = enemy.interact(this.board.get(newPos));
+        board.put(enemyPos, board.get(finalPos));
+        board.put(finalPos, enemy);
     }
 
     @Override

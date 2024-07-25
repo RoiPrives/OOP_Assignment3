@@ -32,7 +32,7 @@ public class TileFactory {
     );
 
     private static final Map<Character, Supplier<Enemy>> enemyTypes = Map.ofEntries(
-            Map.entry('s', () -> new Monster('s', "Lannister Soldier", 80, 5000, 3, 3, 25)),
+            Map.entry('s', () -> new Monster('s', "Lannister Soldier", 80, 10, 3, 3, 25)),
             Map.entry('k', () -> new Monster('k', "Lannister Knight", 200, 14, 8, 4, 50)),
             Map.entry('q', () -> new Monster('q', "Queen's Guard", 400, 20, 15, 5, 100)),
             Map.entry('z', () -> new Monster('z', "Wight", 600, 30, 15, 3, 100)),
