@@ -9,7 +9,7 @@ import View.CLI;
 public class Main {
     public static void main(String[] args) {
         CLI cli = new CLI();
-        Game game = new Game(args[0], new FixedGenerator(), cli.getMessageCallback(), cli.getInputCallback());
+        Game game = new Game( "C:/Users/Liele/Documents/אוניברסיטת בן גוריון/OOB/OOP_Assignment3/levels_dir", new FixedGenerator(), cli.getMessageCallback(), cli.getInputCallback());
         game.runGame();
         //Game game = new Game(args[0], new FixedGenerator(), cli.getMessageCallback(), cli.getInputCallback());
         //game.runGame();

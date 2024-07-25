@@ -27,7 +27,7 @@ public class Warrior extends Player{
 
     @Override
     public Position castAbility(List<Enemy> enemies) {
-        if(remainingCooldown == 0) {
+        if(remainingCooldown <= 0) {
             remainingCooldown = cooldown;
             health.increaseHealthAmout(INCREASE_HEALTH * defense);
             List<Enemy> enemiesInRange = getEnemiesInRange(enemies, ABILITY_RANGE);
