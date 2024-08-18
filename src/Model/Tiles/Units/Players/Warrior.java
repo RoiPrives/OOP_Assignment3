@@ -32,7 +32,7 @@ public class Warrior extends Player{
             health.increaseHealthAmout(INCREASE_HEALTH * defense);
             List<Enemy> enemiesInRange = getEnemiesInRange(enemies, ABILITY_RANGE);
             Enemy enemyToAttack = enemiesInRange.get(generator.generate(enemiesInRange.size()));
-            enemyToAttack.takeDamage((int)(ABILITY_FACTOR * health.getHealthPool()));
+            enemyToAttack.takeDamage((int)(ABILITY_FACTOR * health.getHealthPool()), this);
         }
         return this.position;
     }

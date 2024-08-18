@@ -28,17 +28,13 @@ public class Board {
         deathCallbackEnemy = this::enemyDeath;
     }
 
-    //public void onDeath(Unit unit){
-        //unit.handleDeath();
-    //}
-
     public void playerDeath(Player myPlayer){
-        System.out.println("Player death " + myPlayer.toString());
+        this.player.setChar('X');
         over = true;
     }
 
     public void enemyDeath(Enemy enemy){
-        System.out.println("Enemy death " + enemy.toString());
+        //System.out.println("Enemy death " + enemy.toString());
         board.put(enemy.getPosition(), new EmptyTile().initialize(this.player.getPosition()));
         enemies.remove(enemy);
     }
@@ -54,7 +50,6 @@ public class Board {
     public void initBoard(List<Tile> tiles, Player player, List<Enemy> enemies, int width){
         this.board = new TreeMap<>();
         for (Tile tile : tiles) {
-            //board.put(tile.getPosition(), tile);
             board.put(new Position(tile.getPosition()), tile);
         }
         this.player = player;
@@ -104,12 +99,6 @@ public class Board {
             }
             sb.append("\n");
         }
-//        for(Map.Entry<Position, Tile> entry : board.entrySet()){
-//            sb.append(entry.getValue().getTile());
-//            if(entry.getKey().getX() == width - 1){
-//                sb.append("\n");
-//            }
-//        }
         return sb.toString();
     }
 }

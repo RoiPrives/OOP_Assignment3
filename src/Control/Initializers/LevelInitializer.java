@@ -46,8 +46,10 @@ public class LevelInitializer {
     }
 
     private Player producePlayer(Position pos, DeathCallbackPlayer deathCallbackPlayer){
-        if(this.player == null)
+        if(this.player == null) {
             this.player = tileFactory.producePlayer(pos, playerId, generator, messageCallback, deathCallbackPlayer);
+            messageCallback.send("You have selected:\n" + player.getName());
+        }
         return this.player;
     }
 

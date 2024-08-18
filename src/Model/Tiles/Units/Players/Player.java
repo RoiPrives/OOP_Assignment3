@@ -97,17 +97,25 @@ public abstract class Player extends Unit {
         return this.position;
     }
 
+    public void setChar(char c){
+        this.tile = c;
+    }
+
     public void playerDeath(Unit unit){
         deathCallback.onDeath(this);
     }
 
     @Override
     public String toString(){
-        return super.toString() + " level :" + "  " + level;
+        return super.toString() + "\tLevel: " + level + "\tExperience: " + experience + "/" + EXPERIENCE_TO_LEVEL_UP * level;
     }
 
     @Override
     public void notifyDeath(){
         deathCallback.onDeath(this);
+    }
+
+    public int getLevel(){
+        return this.level;
     }
 }

@@ -37,6 +37,9 @@ public abstract class Unit extends Tile {
         this.attack = attack;
         this.defense = defense;
     }
+    public String getName() {
+        return name;
+    }
 
     public Position moveUp(){
         return new Position(this.position.getX(), this.position.getY() - 1);
@@ -92,35 +95,37 @@ public abstract class Unit extends Tile {
     public boolean alive() { return health.getHealthAmount() > 0; }
 
     public void combat(Unit defender){
+        messageCallback.send(this.name + " engaged in combat with " + defender.getName());
+        messageCallback.send(this.toString());
+        messageCallback.send(defender.toString());
         int attack = this.attack();
         int defend = defender.defend();
-        defender.takeDamage(attack - defend);
+        messageCallback.send(this.name + " rolled " + attack + " attack points.");
+        messageCallback.send(defender.name + " rolled " + defend + " defence points.");
+        messageCallback.send(this.name + " dealt " + defender.takeDamage(attack - defend, this) + " damage to " + defender.getName() + ".");
     }
 
     public void combatConstAttack(int damage , Unit unit){
         int defend = unit.defend();
-        unit.takeDamage(damage - defend);
+        unit.takeDamage(damage - defend, this);
     }
 
-    public void takeDamage(int damage){
-        health.takeDamage(damage);
+    public int takeDamage(int damage, Unit attacker){
+        int taken = health.takeDamage(damage);
         if(!alive()) {
+            messageCallback.send(this.name + " was killed by " + attacker.name + ".");
             notifyDeath();
         }
+        return taken;
     }
 
     public abstract void notifyDeath();
 
-    /*public void onDeath(){
-        deathCallback.onDeath();
-    }
-     */
 
     @Override
     public String toString() {
         String returnValue;
-        String tab = "  ";
-        returnValue = "name: " +  name + tab +  health.toString() + tab + "attack : " + attack + tab + "defense : "  + defense;
+        returnValue = name + "\t" +  health.toString() + "\tAttack: " + attack + "\tDefense: "  + defense;
         return returnValue;
     }
 }

@@ -22,9 +22,6 @@ public abstract class Tile {
         Position temp = new Position(toSwap.position);
         toSwap.position = new Position(this.position);
         this.position = new Position(temp);
-        //System.out.println("hi");
-        //toSwap.position = this.position;
-        //this.position = temp;
     }
 
     public Position getPosition(){
