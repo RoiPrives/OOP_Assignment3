@@ -14,6 +14,7 @@ public class Trap extends Enemy{
     public Trap(char tile, String name, int healthPool, int attack, int defense, int experienceValue, int visibilityTime, int invisibilityTime) {
         super(tile, name, healthPool, attack, defense);
         visible = true;
+        experience = experienceValue;
         ticksCount = 0;
         this.invisibilityTime = invisibilityTime;
         this.visibilityTime = visibilityTime;
@@ -37,5 +38,13 @@ public class Trap extends Enemy{
         return this.position;
     }
 
+
+    public boolean isVisible() {
+        return this.visible;
+    }
+
+    public int getTicksCount() {
+        return this.ticksCount;
+    }
 
 }

@@ -62,4 +62,10 @@ public class Mage extends Player{
         String tab = "  ";
         return super.toString() + tab + "current mana: " + currentMana  + "/" + manaPool + tab + "spellPower: "  + spellPower;
     }
+
+    public int getMana() {
+        return this.currentMana;
+    }
+
+
 }

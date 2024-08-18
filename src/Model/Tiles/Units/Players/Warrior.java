@@ -57,4 +57,8 @@ public class Warrior extends Player{
     public String toString(){
         return super.toString() + " Cooldown: " + this.cooldown + " Remaining: " + this.remainingCooldown;
     }
+
+    public int getRemainingCooldown() {
+        return remainingCooldown;
+    }
 }

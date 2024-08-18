@@ -51,4 +51,8 @@ public class Rogue extends Player {
     public String toString() {
         return super.toString() + " Energy " + this.energy + " Cost " + this.cost;
     }
+
+    public int getEnergy() {
+        return this.energy;
+    }
 }

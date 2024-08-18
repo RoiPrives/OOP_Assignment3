@@ -53,7 +53,9 @@ public abstract class Player extends Unit {
     public Position tick(char actionChar, List<Enemy> enemies){
         return actions.getOrDefault(actionChar, () -> this.castAbility(enemies)).get();
     }
-
+    public void killPlayer(){
+        health.takeDamage(getHealthPool());
+    }
 
     @Override
     public Position accept(Unit unit) {
@@ -109,5 +111,29 @@ public abstract class Player extends Unit {
     @Override
     public void notifyDeath(){
         deathCallback.onDeath(this);
+    }
+
+    public int getHealthAmount() {
+        return  this.health.getHealthAmount();
+    }
+
+    public int getExperience() {
+        return this.experience;
+    }
+
+    public int getLevel() {
+        return this.level;
+    }
+
+    public int getHealthPool() {
+        return this.health.getHealthPool();
+    }
+
+    public int getAttack() {
+        return this.attack;
+    }
+
+    public int getDefense() {
+        return this.defense;
     }
 }
