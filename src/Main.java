@@ -1,10 +1,7 @@
 import Model.Game.Game;
-import Model.Tiles.Units.Enemies.Enemy;
-import Model.Tiles.Units.Players.Player;
 import Utils.Generators.FixedGenerator;
 import View.View;
 import View.CLI;
-import View.TestView;
 
 import java.util.ArrayList;
 import java.util.Arrays;

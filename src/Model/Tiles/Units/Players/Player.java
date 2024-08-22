@@ -136,7 +136,4 @@ public abstract class Player extends Unit {
     public int getDefense() {
         return this.defense;
     }
-    public int getLevel(){
-        return this.level;
-    }
 }

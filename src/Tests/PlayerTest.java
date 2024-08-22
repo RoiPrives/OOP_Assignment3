@@ -30,6 +30,7 @@ public class PlayerTest {
 
     @Before
     public void setUp() {
+        CLI cli = new CLI();
         position = new Position(0, 0);  // Initialize a position for testing
         mage = new Mage("TestMage", 100, 10, 5, 20, 30, 40, 3, 5);  // Example Mage initialization
         rogue = new Rogue("TestRogue", 100, 15, 10, 40);  // Example Rogue initialization
@@ -37,15 +38,18 @@ public class PlayerTest {
         enemy = new Monster('E', "TestEnemy", 150, 5, 2,7,0);  // Example enemy initialization
 
 
-        mage.initialize(position, new FixedGenerator(),(Player) -> System.out.println(Player.toString()), System.out::println);
-        rogue.initialize(position, new FixedGenerator(),(Player) -> System.out.println(Player.toString()) , System.out::println);
-        warrior.initialize(position, new FixedGenerator(),(Player) -> System.out.println(Player.toString()) , System.out::println);
-        enemy.initialize(new Position(1,0),new FixedGenerator(), (Enemy) -> System.out.println(Enemy.toString()), System.out::println);
+
+        mage.initialize(position, new FixedGenerator(), System.out::println, cli.getMessageCallback());
+        rogue.initialize(position, new FixedGenerator(), System.out::println, cli.getMessageCallback());
+        warrior.initialize(position, new FixedGenerator(),System.out::println, cli.getMessageCallback());
+        enemy.initialize(new Position(1,0),new FixedGenerator(), System.out::println, cli.getMessageCallback());
     }
 
     public Enemy getEnemy() {
         Enemy testEnemy = new Monster('E', "TestEnemy", 1, 5, 2,7,5);
-        testEnemy.initialize(new Position(1,0),new FixedGenerator(),(Enemy) -> System.out.println(Enemy.toString()), System.out::println);
+
+        testEnemy.initialize(new Position(1,0),new FixedGenerator(), System.out::println, System.out::println);
+
         return testEnemy;
     }
 
