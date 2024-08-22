@@ -2,14 +2,16 @@ package Model.Game;
 import Utils.Callbacks.InputCallback;
 import Utils.Callbacks.MessageCallback;
 import Utils.Generators.Generator;
+
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class Game {
-    //private List<Board> boards;
-    //private LevelInitializer levelInitializer;
     private final String levelsPath;
     private final MessageCallback messageCallback;
     private final InputCallback inputCallback;
@@ -18,36 +20,33 @@ public class Game {
 
 
     public Game(String path, Generator generator, MessageCallback messageCallback, InputCallback inputCallback){
-        //boards = new ArrayList<Board>();
         this.generator = generator;
-        //this.deathCallback = deathCallback;
         this.messageCallback = messageCallback;
         this.inputCallback = inputCallback;
         this.levelsPath = path;
     }
 
     public void runGame(){
-        //Board board = new Board();
-        //board.initBoard();
-        //Player player = new Player("player", 20, 20, 20).initialize(new Position(0, 0), generator, board.getDeathCallbackPlayer(), messageCallback);
-        //Enemy enemy = new Enemy('a', "enemy", 20, 20, 20).initialize(new Position(1, 0), generator, board.getDeathCallbackEnemy(), messageCallback);
-        //player.takeDamage(40);
-        //enemy.takeDamage(40);
         // print menu and let player choose character
         int playerId = choosePlayer(PLAYERS_COUNT);
-       //levelInitializer = new LevelInitializer(playerId, generator, deathCallback, messageCallback);//levelInitializer = new LevelInitializer(playerId, generator, messageCallback);
         Path path = Paths.get(levelsPath);
         try {
-            Files.list(path)
+            List<Path> files = Files.list(path)
                     .filter(Files::isRegularFile)
-                    .forEach(file -> {
-                        Level level = new Level(playerId, file.toAbsolutePath().toString(), generator, messageCallback, inputCallback);
-                        level.initLevel();
-                        if(!level.start())
-                            throw new RuntimeException("OVER");
-                    });
-        } catch (Exception e) {
+                    .collect(Collectors.toList());
+
+            for (Path file : files) {
+                Level level = new Level(playerId, file.toAbsolutePath().toString(), generator, messageCallback, inputCallback);
+                level.initLevel();
+                if (!level.start()) {
+                    messageCallback.send("You lost.");
+                    messageCallback.send(level.getBoard());
+                    break;
+                }
+            }
+        } catch (IOException e) {
             e.printStackTrace();
+            // Handle the exception as needed
         }
     }
 
@@ -59,16 +58,18 @@ Select player:
 3. Melisandre      Health: 100/100    Attack: 5      Defense: 1      Level: 1     Experience: 0/50    Mana: 75/300      Spell Power: 15
 4. Thoros of Myr   Health: 250/250    Attack: 25     Defense: 4      Level: 1     Experience: 0/50    Mana: 37/150      Spell Power: 20
 5. Arya Stark      Health: 150/150    Attack: 40     Defense: 2      Level: 1     Experience: 0/50    Energy: 100/100
-6. Bronn           Health: 250/250    Attack: 35     Defense: 3      Level: 1     Experience: 0/50    Energy: 100/100
-                """);
+6. Bronn           Health: 250/250    Attack: 35     Defense: 3      Level: 1     Experience: 0/50    Energy: 100/100""");
     }
 
-    private int choosePlayer(int max){
+    public int choosePlayer(int max){
         int choice = 0;
         do {
             try {
                 printMenu();
                 choice = Integer.parseInt(inputCallback.recieve());
+                if(choice < 1 || choice > max){
+                    messageCallback.send("Invalid Choice");
+                }
             } catch (Exception _) {
             }
         }while(choice < 1 || choice > max);

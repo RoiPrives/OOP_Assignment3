@@ -36,6 +36,6 @@ public class Health {
 
     @Override
     public String toString() {
-        return "health: " + healthAmount + "/" + healthPool;
+        return "Health: " + healthAmount + "/" + healthPool;
     }
 }

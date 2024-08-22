@@ -59,8 +59,7 @@ public class Mage extends Player{
 
     @Override
     public String toString() {
-        String tab = "  ";
-        return super.toString() + tab + "current mana: " + currentMana  + "/" + manaPool + tab + "spellPower: "  + spellPower;
+        return super.toString() + "\tMana: " + currentMana  + "/" + manaPool + "\tSpell Power: "  + spellPower;
     }
 
     public int getMana() {

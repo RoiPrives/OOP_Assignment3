@@ -26,24 +26,17 @@ public class Level {
     }
 
     public boolean start(){
-        /*messageCallback.send("Player: " + board.getPlayer().toString());
-        messageCallback.send("\nEnemies:");
-        for(Enemy enemy: board.getEnemies()){
-            messageCallback.send(enemy.toString());
-        }
-        messageCallback.send("\nBoard:");
-        messageCallback.send(board.toString());
-         */
-        messageCallback.send("\nBoard:");
         messageCallback.send(board.toString());
         boolean playerDied = false;
         while(!playerDied && !board.getEnemies().isEmpty()) {
+            messageCallback.send(board.getPlayer().toString());
             playerDied = this.board.tick(inputCallback.recieve().charAt(0));
-            messageCallback.send("Player: " + board.getPlayer().toString());
-            messageCallback.send("\nBoard:");
             messageCallback.send(board.toString());
         }
         return !playerDied;
+    }
 
+    public String getBoard(){
+        return board.toString();
     }
 }
