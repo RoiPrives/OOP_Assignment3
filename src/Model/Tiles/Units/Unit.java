@@ -20,7 +20,6 @@ public abstract class Unit extends Tile {
     protected int attack;
     protected int defense;
     protected Generator generator;
-    //protected DeathCallback deathCallback;
     protected MessageCallback messageCallback;
     protected List<Supplier<Position>> moves = List.of(
             this::moveLeft,
@@ -106,8 +105,13 @@ public abstract class Unit extends Tile {
     }
 
     public void combatConstAttack(int damage , Unit unit){
+        messageCallback.send(this.name + " engaged in combat with " + unit.getName());
+        messageCallback.send(this.toString());
+        messageCallback.send(unit.toString());
         int defend = unit.defend();
-        unit.takeDamage(damage - defend, this);
+        messageCallback.send(this.name + " attacked with " + damage + " attack points.");
+        messageCallback.send(unit.name + " rolled " + defend + " defence points.");
+        messageCallback.send(this.name + " dealt " + unit.takeDamage(attack - defend, this) + " damage to " + unit.getName() + ".");
     }
 
     public int takeDamage(int damage, Unit attacker){
