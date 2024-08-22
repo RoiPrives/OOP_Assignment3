@@ -16,7 +16,7 @@ public class Game {
     private final MessageCallback messageCallback;
     private final InputCallback inputCallback;
     private final Generator generator;
-    private static final int PLAYERS_COUNT = 6;
+    private static final int PLAYERS_COUNT = 7;
 
 
     public Game(String path, Generator generator, MessageCallback messageCallback, InputCallback inputCallback){
@@ -58,7 +58,8 @@ Select player:
 3. Melisandre      Health: 100/100    Attack: 5      Defense: 1      Level: 1     Experience: 0/50    Mana: 75/300      Spell Power: 15
 4. Thoros of Myr   Health: 250/250    Attack: 25     Defense: 4      Level: 1     Experience: 0/50    Mana: 37/150      Spell Power: 20
 5. Arya Stark      Health: 150/150    Attack: 40     Defense: 2      Level: 1     Experience: 0/50    Energy: 100/100
-6. Bronn           Health: 250/250    Attack: 35     Defense: 3      Level: 1     Experience: 0/50    Energy: 100/100""");
+6. Bronn           Health: 250/250    Attack: 35     Defense: 3      Level: 1     Experience: 0/50    Energy: 100/100
+7. Ygritte         Health: 220/220    Attack: 30     Defense: 2      Level: 1     Experience: 0/50    Arrows: 10        Range: 6""");
     }
 
     public int choosePlayer(int max){

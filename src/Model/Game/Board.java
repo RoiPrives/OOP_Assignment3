@@ -31,7 +31,6 @@ public class Board {
     }
 
     public void enemyDeath(Enemy enemy){
-        //System.out.println("Enemy death " + enemy.toString());
         board.put(enemy.getPosition(), new EmptyTile().initialize(this.player.getPosition()));
         enemies.remove(enemy);
     }

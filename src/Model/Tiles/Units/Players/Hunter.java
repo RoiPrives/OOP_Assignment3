@@ -16,6 +16,7 @@ public class Hunter extends Player {
         super(name, healthPool, attack, defense);
         this.arrowsCount = 10 * getLevel();
         this.ticksCount = 0;
+        this.range = range;
 
     }
 
@@ -67,7 +68,7 @@ public class Hunter extends Player {
 
     @Override
     public String toString() {
-        return super.toString() + " Range " + this.range + " ArrowsCount " + this.arrowsCount;
+        return super.toString() + "\tArrows: " + this.arrowsCount + "\tRange: " + this.range;
     }
 
 
