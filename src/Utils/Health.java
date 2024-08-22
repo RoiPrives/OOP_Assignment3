@@ -28,7 +28,7 @@ public class Health {
     }
 
     public int takeDamage(int damageTaken) {
-        damageTaken = Math.max(0, healthAmount - damageTaken);
+        damageTaken = Math.max(0, damageTaken);//healthAmount - damageTaken);
         damageTaken = Math.min(damageTaken , healthAmount);
         healthAmount -= damageTaken;
         return damageTaken;
@@ -36,6 +36,6 @@ public class Health {
 
     @Override
     public String toString() {
-        return "health: " + healthAmount + "/" + healthPool;
+        return "Health: " + healthAmount + "/" + healthPool;
     }
 }

@@ -28,12 +28,13 @@ public class Mage extends Player{
         if(currentMana >= manaCost){
             currentMana -= manaCost;
             int hits  = 0;
-            while (hits < hitsCount && !enemies.isEmpty()) {
-                List<Enemy> enemiesInRange = getEnemiesInRange(enemies, abilityRange);
+            List<Enemy> enemiesInRange = getEnemiesInRange(enemies, abilityRange);
+            while (hits < hitsCount && !enemiesInRange.isEmpty()) {
                 Enemy enemyToAttack = enemiesInRange.get(generator.generate(enemiesInRange.size()));
                 this.combatConstAttack(spellPower, enemyToAttack);
                 if (enemyToAttack.alive())
                     enemiesInRange.add(enemyToAttack);
+                hits++;
             }
         }
     return this.position;
@@ -58,7 +59,6 @@ public class Mage extends Player{
 
     @Override
     public String toString() {
-        String tab = "  ";
-        return super.toString() + tab + "current mana: " + currentMana  + "/" + manaPool + tab + "spellPower: "  + spellPower;
+        return super.toString() + "\tMana: " + currentMana  + "/" + manaPool + "\tSpell Power: "  + spellPower;
     }
 }

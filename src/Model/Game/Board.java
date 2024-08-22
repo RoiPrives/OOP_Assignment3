@@ -4,8 +4,11 @@ import Model.Tiles.Tile;
 import Model.Tiles.Units.Enemies.Enemy;
 import Model.Tiles.Units.Players.Player;
 import Model.Tiles.Units.Unit;
-import Utils.Callbacks.DeathCallback;
+import Utils.Callbacks.DeathCallbackEnemy;
+import Utils.Callbacks.DeathCallbackPlayer;
 import Utils.Position;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -15,25 +18,39 @@ public class Board {
     private Player player;
     private List<Enemy> enemies;
     private int width;
-    private DeathCallback deathCallback;
+    private final DeathCallbackPlayer deathCallbackPlayer;
+    private final DeathCallbackEnemy deathCallbackEnemy;
+    private boolean over = false;
 
 
     public Board() {
-        deathCallback = this::onDeath;
+        deathCallbackPlayer = this::playerDeath;
+        deathCallbackEnemy = this::enemyDeath;
     }
 
-    //public void onDeath(Unit unit){
-        //unit.handleDeath();
-    //}
+    public void playerDeath(Player myPlayer){
+        this.player.setChar('X');
+        over = true;
+    }
 
-    public void onDeath(Player player){
-      player.handleDeath();
+    public void enemyDeath(Enemy enemy){
+        //System.out.println("Enemy death " + enemy.toString());
+        board.put(enemy.getPosition(), new EmptyTile().initialize(this.player.getPosition()));
+        enemies.remove(enemy);
+    }
+
+    public DeathCallbackPlayer getDeathCallbackPlayer(){
+        return deathCallbackPlayer;
+    }
+
+    public DeathCallbackEnemy getDeathCallbackEnemy(){
+        return deathCallbackEnemy;
     }
 
     public void initBoard(List<Tile> tiles, Player player, List<Enemy> enemies, int width){
         this.board = new TreeMap<>();
         for (Tile tile : tiles) {
-            board.put(tile.getPosition(), tile);
+            board.put(new Position(tile.getPosition()), tile);
         }
         this.player = player;
         this.enemies = enemies;
@@ -48,28 +65,39 @@ public class Board {
         return enemies;
     }
 
-    public void tick(char userAction){
-        Position playerPosition = player.getPosition();
-        Position newPos = this.player.tick(userAction, this.enemies);
-        newPos = this.player.interact(this.board.get(newPos));
-        Tile toSwap = board.get(newPos);
-        board.put(newPos, player);
-        board.put(playerPosition, toSwap);
-        /*for (Enemy enemy : this.enemies) {
-            newPos = enemy.tick();
-            enemy.interact(this.board.get(newPos));
+    public boolean tick(char userAction){
+        playerTick(userAction);
+        for (int i = 0; i < enemies.size() && !over; i++) {
+            enemyTick(enemies.get(i));
         }
-         */
+        return over;
+    }
+
+    public void playerTick(char userAction){
+        Position playerPosition = new Position(player.getPosition());
+        Position newPos = this.player.tick(userAction, this.enemies);
+        Position finalPos = this.player.interact(this.board.get(newPos));
+        board.put(playerPosition, board.get(finalPos));
+        board.put(finalPos, this.player);
+    }
+
+    public void enemyTick(Enemy enemy){
+        Position enemyPos = new Position(enemy.getPosition());
+        Position newPos = enemy.tick(this.player.getPosition());
+        Position finalPos = enemy.interact(this.board.get(newPos));
+        board.put(enemyPos, board.get(finalPos));
+        board.put(finalPos, enemy);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for(Map.Entry<Position, Tile> entry : board.entrySet()){
-            sb.append(entry.getValue().getTile());
-            if(entry.getKey().getX() == width - 1){
-                sb.append("\n");
+        for(int y = 0; y < this.board.size() / width; y++){
+            for(int x = 0; x < width; x++){
+                Tile tile = this.board.get(new Position(x, y));
+                sb.append(board.get(new Position(x, y)).getTile());
             }
+            sb.append("\n");
         }
         return sb.toString();
     }

@@ -6,7 +6,8 @@ import Model.Tiles.Tile;
 import Model.Tiles.Units.Enemies.Enemy;
 import Model.Tiles.Units.Players.Player;
 import Model.Tiles.Wall;
-import Utils.Callbacks.DeathCallback;
+import Utils.Callbacks.DeathCallbackEnemy;
+import Utils.Callbacks.DeathCallbackPlayer;
 import Utils.Callbacks.MessageCallback;
 import Utils.Generators.Generator;
 import Utils.Position;
@@ -26,37 +27,40 @@ public class LevelInitializer {
     private final Generator generator;
     private final MessageCallback messageCallback;
     private final int playerId;
+    private Board board;
 
 
-    public LevelInitializer(int playerId, Generator generator, MessageCallback messageCallback) {
+    public LevelInitializer(int playerId, Generator generator, MessageCallback messageCallback, Board board) {
         this.playerId = playerId;
         this.enemies = new ArrayList<>();
+        this.board = board;
         tileFactory = new TileFactory();
         tileCreator = Map.of(
                 '.', tileFactory::produceEmptyTile,
                 '#', tileFactory::produceWall,
-                '@', this::producePlayer
+                '@', (pos) -> producePlayer(pos, board.getDeathCallbackPlayer())
         );
         this.generator = generator;
         //this.deathCallback = deathCallback;
         this.messageCallback = messageCallback;
     }
 
-    private Player producePlayer(Position pos){
-        if(this.player == null)
-            this.player = tileFactory.producePlayer(pos, playerId, generator, messageCallback);
+    private Player producePlayer(Position pos, DeathCallbackPlayer deathCallbackPlayer){
+        if(this.player == null) {
+            this.player = tileFactory.producePlayer(pos, playerId, generator, messageCallback, deathCallbackPlayer);
+            messageCallback.send("You have selected:\n" + player.getName());
+        }
         return this.player;
     }
 
-    private Enemy produceEnemy(Position pos, char tile){
-        Enemy enemy = tileFactory.produceEnemy(tile, pos, generator, messageCallback);
+    private Enemy produceEnemy(Position pos, char tile, DeathCallbackEnemy deathCallbackEnemy) {
+        Enemy enemy = tileFactory.produceEnemy(tile, pos, generator, messageCallback, deathCallbackEnemy);
         this.enemies.add(enemy);
         return enemy;
 
     }
 
-
-    public void initLevel(String levelPath, Board board){
+    public void initLevel(String levelPath){
         List<String> lines;
         try {
             lines = Files.readAllLines(Paths.get(levelPath));
@@ -70,11 +74,11 @@ public class LevelInitializer {
         for(String line : lines){
             x = 0;
             for(char c : line.toCharArray()){
-                tiles.add(tileCreator.getOrDefault(c, (pos) -> this.produceEnemy(pos, c)).apply(new Position(x, y)));
+                tiles.add(tileCreator.getOrDefault(c, (pos) -> this.produceEnemy(pos, c, board.getDeathCallbackEnemy())).apply(new Position(x, y)));
                 x++;
             }
             y++;
         }
-        board.initBoard(tiles, this.player, this.enemies, x);
+        this.board.initBoard(tiles, this.player, this.enemies, x);
     }
 }

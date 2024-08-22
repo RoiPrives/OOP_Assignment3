@@ -19,9 +19,9 @@ public abstract class Tile {
     public abstract Position accept(Unit unit);
 
     public void swapPositions(Tile toSwap) {
-        Position temp = toSwap.position;
-        toSwap.position = this.position;
-        this.position = temp;
+        Position temp = new Position(toSwap.position);
+        toSwap.position = new Position(this.position);
+        this.position = new Position(temp);
     }
 
     public Position getPosition(){

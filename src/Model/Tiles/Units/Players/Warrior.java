@@ -27,12 +27,12 @@ public class Warrior extends Player{
 
     @Override
     public Position castAbility(List<Enemy> enemies) {
-        if(remainingCooldown == 0) {
+        if(remainingCooldown <= 0) {
             remainingCooldown = cooldown;
             health.increaseHealthAmout(INCREASE_HEALTH * defense);
             List<Enemy> enemiesInRange = getEnemiesInRange(enemies, ABILITY_RANGE);
             Enemy enemyToAttack = enemiesInRange.get(generator.generate(enemiesInRange.size()));
-            enemyToAttack.takeDamage((int)(ABILITY_FACTOR * health.getHealthPool()));
+            enemyToAttack.takeDamage((int)(ABILITY_FACTOR * health.getHealthPool()), this);
         }
         return this.position;
     }
@@ -45,6 +45,12 @@ public class Warrior extends Player{
         attack += INCREASE_ATTACK * level;
         defense += INCREASE_DEFENSE * level;
         health.fillHealthPool();
+    }
+    @Override
+    public Position tick(char actionChar, List<Enemy> enemies) {
+        Position pos = super.tick(actionChar ,enemies);
+        remainingCooldown = remainingCooldown -1;
+        return pos;
     }
 
     @Override
