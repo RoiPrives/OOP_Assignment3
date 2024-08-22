@@ -1,6 +1,7 @@
 package Model.Tiles.Units.Players;
 
 import Model.Tiles.Units.Enemies.Enemy;
+import Model.Tiles.Units.Unit;
 import Utils.Position;
 
 import java.util.List;
@@ -26,11 +27,11 @@ public class Hunter extends Player {
         defense = getDefense() + getLevel();
     }
 
-    public Enemy closestEnemy(List<Enemy> enemies){
-        List<Enemy> inRange = getEnemiesInRange(enemies, range);
-        Enemy enemy = null;
+    public Unit closestEnemy(List<Unit> enemies){
+        List<Unit> inRange = getEnemiesInRange(enemies, range);
+        Unit enemy = null;
         double closestPos = range;
-        for(Enemy e : inRange){
+        for(Unit e : inRange){
             double closerPos = e.getPosition().range(this.position);
             if(closerPos < closestPos){
                 closestPos = closerPos;
@@ -41,10 +42,10 @@ public class Hunter extends Player {
     }
 
     @Override
-    public Position castAbility(List<Enemy> enemies) {
+    public Position castAbility(List<Unit> enemies) {
         if(arrowsCount == 0)
             return this.position;
-        Enemy enemy = closestEnemy(enemies);
+        Unit enemy = closestEnemy(enemies);
         if (enemy!=null) {
             arrowsCount = arrowsCount - 1;
             combatConstAttack(this.attack , enemy);
@@ -53,7 +54,7 @@ public class Hunter extends Player {
     }
 
     @Override
-    public Position tick(char actionChar, List<Enemy> enemies) {
+    public Position tick(char actionChar, List<Unit> enemies) {
         if (ticksCount == 10) {
             arrowsCount = arrowsCount + getLevel();
             ticksCount = 0;

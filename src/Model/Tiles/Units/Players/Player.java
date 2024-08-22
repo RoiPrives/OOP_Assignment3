@@ -137,4 +137,5 @@ public abstract class Player extends Unit implements HeroicUnit {
     public int getDefense() {
         return this.defense;
     }
+    public int getLevel() { return this.level; }
 }
