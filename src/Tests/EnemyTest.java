@@ -1,6 +1,7 @@
 package Tests;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import Model.Tiles.Units.Players.Mage;
 import Utils.Generators.FixedGenerator;
@@ -33,9 +34,9 @@ public class EnemyTest {
         trap = new Trap('T', "TestTrap", 80, 20, 5, 30, 3, 5);
 
         // Initialize their positions
-        mage.initialize(playerPosition, new FixedGenerator(),(Player) -> System.out.println(Player.toString()), null);
-        monster.initialize(monsterPosition, new FixedGenerator(),(Enemy) -> System.out.println(Enemy.toString()) , null);
-        trap.initialize(trapPosition, new FixedGenerator(), (Enemy) -> System.out.println(Enemy.toString()), null);
+        mage.initialize(playerPosition, new FixedGenerator(),System.out::println, System.out::println);
+        monster.initialize(monsterPosition, new FixedGenerator(),System.out::println , System.out::println);
+        trap.initialize(trapPosition, new FixedGenerator(), System.out::println, System.out::println);
     }
 
     // Tests for Monster-specific behavior

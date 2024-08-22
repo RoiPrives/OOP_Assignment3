@@ -37,15 +37,15 @@ public class PlayerTest {
         enemy = new Monster('E', "TestEnemy", 150, 5, 2,7,0);  // Example enemy initialization
 
 
-        mage.initialize(position, new FixedGenerator(),(Player) -> System.out.println(Player.toString()), null);
-        rogue.initialize(position, new FixedGenerator(),(Player) -> System.out.println(Player.toString()) , null);
-        warrior.initialize(position, new FixedGenerator(),(Player) -> System.out.println(Player.toString()) , null);
-        enemy.initialize(new Position(1,0),new FixedGenerator(), (Enemy) -> System.out.println(Enemy.toString()), null);
+        mage.initialize(position, new FixedGenerator(),(Player) -> System.out.println(Player.toString()), System.out::println);
+        rogue.initialize(position, new FixedGenerator(),(Player) -> System.out.println(Player.toString()) , System.out::println);
+        warrior.initialize(position, new FixedGenerator(),(Player) -> System.out.println(Player.toString()) , System.out::println);
+        enemy.initialize(new Position(1,0),new FixedGenerator(), (Enemy) -> System.out.println(Enemy.toString()), System.out::println);
     }
 
     public Enemy getEnemy() {
         Enemy testEnemy = new Monster('E', "TestEnemy", 1, 5, 2,7,5);
-        testEnemy.initialize(new Position(1,0),new FixedGenerator(),(Enemy) -> System.out.println(Enemy.toString()), null);
+        testEnemy.initialize(new Position(1,0),new FixedGenerator(),(Enemy) -> System.out.println(Enemy.toString()), System.out::println);
         return testEnemy;
     }
 
