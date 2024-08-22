@@ -1,5 +1,6 @@
 package Model.Tiles.Units.Players;
 import Model.Tiles.Units.Enemies.Enemy;
+import Model.Tiles.Units.HeroicUnit;
 import Model.Tiles.Units.Unit;
 //import Utils.Callbacks.DeathCallback;
 import Utils.Callbacks.DeathCallbackPlayer;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public abstract class Player extends Unit {
+public abstract class Player extends Unit implements HeroicUnit {
     public static final char PLAYER_TILE = '@';
     protected int experience;
     protected int level;
@@ -38,7 +39,7 @@ public abstract class Player extends Unit {
     }
 
     //public abstract Position castAbility(List<Enemy> enemies);
-    public Position castAbility(List<Enemy> enemies){
+    public Position castAbility(List<Unit> units){
         messageCallback.send("specialAbility");
         return this.position;
     }
@@ -50,8 +51,8 @@ public abstract class Player extends Unit {
             levelUp();
     }
 
-    public Position tick(char actionChar, List<Enemy> enemies){
-        return actions.getOrDefault(actionChar, () -> this.castAbility(enemies)).get();
+    public Position tick(char actionChar, List<Unit> units){
+        return actions.getOrDefault(actionChar, () -> this.castAbility(units)).get();
     }
     public void killPlayer(){
         health.takeDamage(getHealthPool());
@@ -62,9 +63,9 @@ public abstract class Player extends Unit {
         return unit.visit(this);
     }
 
-    protected List<Enemy> getEnemiesInRange(List<Enemy> enemies, int range){
-        List<Enemy> inRangeEnemies = new ArrayList<>();
-        for(Enemy enemy: enemies){
+    protected List<Unit> getEnemiesInRange(List<Unit> enemies, int range){
+        List<Unit> inRangeEnemies = new ArrayList<>();
+        for(Unit enemy: enemies){
             if(this.position.range(enemy.getPosition()) < range)
                 inRangeEnemies.add(enemy);
         }

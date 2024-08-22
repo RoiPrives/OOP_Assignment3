@@ -1,6 +1,7 @@
 package Control.Initializers;
 import Model.Tiles.EmptyTile;
 import Model.Tiles.Tile;
+import Model.Tiles.Units.Enemies.Boss;
 import Model.Tiles.Units.Enemies.Enemy;
 import Model.Tiles.Units.Enemies.Monster;
 import Model.Tiles.Units.Enemies.Trap;
@@ -39,9 +40,9 @@ public class TileFactory {
             Map.entry('b', () -> new Monster('b', "Bear-Wight", 1000, 75, 30, 4, 250)),
             Map.entry('g', () -> new Monster('g', "Giant-Wight", 1500, 100, 40, 5, 500)),
             Map.entry('w', () -> new Monster('w', "White Walker", 2000, 150, 50, 6, 1000)),
-            Map.entry('M', () -> new Monster('M', "The Mountain", 1000, 60, 25, 6, 500)),
-            Map.entry('C', () -> new Monster('C', "Queen Cersei", 100, 10, 10, 1, 1000)),
-            Map.entry('K', () -> new Monster('K', "Night’s King", 5000, 300, 150, 8, 5000)),
+            Map.entry('M', () -> new Boss('M', "The Mountain", 1000, 60, 25, 6, 500, 5)),
+            Map.entry('C', () -> new Boss('C', "Queen Cersei", 100, 10, 10, 1, 1000, 8)),
+            Map.entry('K', () -> new Boss('K', "Night’s King", 5000, 300, 150, 8, 5000, 3)),
             Map.entry('B', () -> new Trap('B', "Bonus Trap", 1, 1, 1, 250, 1, 5)),
             Map.entry('Q', () -> new Trap('Q', "Queen’s Trap", 250, 50, 10, 100, 3, 7)),
             Map.entry('D', () -> new Trap('D', "Death Trap", 500, 100, 20, 250, 1, 10))

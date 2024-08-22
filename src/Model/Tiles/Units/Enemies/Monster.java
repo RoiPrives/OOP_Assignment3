@@ -19,7 +19,8 @@ public class Monster extends Enemy{
     }
 
     @Override
-    public Position tick(Position playerPos) {
+    public Position tick(Player player) {
+        Position playerPos = player.getPosition();
         if(this.position.range(playerPos) < this.visionRange){
             int dx = this.position.getX() - playerPos.getX();
             int dy = this.position.getY() - playerPos.getY();

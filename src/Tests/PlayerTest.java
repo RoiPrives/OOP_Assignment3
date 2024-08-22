@@ -8,6 +8,7 @@ import Model.Tiles.Units.Players.Mage;
 import Model.Tiles.Units.Players.Player;
 import Model.Tiles.Units.Players.Rogue;
 import Model.Tiles.Units.Players.Warrior;
+import Model.Tiles.Units.Unit;
 import Utils.Callbacks.DeathCallbackPlayer;
 import Utils.Generators.FixedGenerator;
 import View.CLI;
@@ -53,7 +54,7 @@ public class PlayerTest {
     // Tests for Mage-specific abilities
     @Test
     public void testMage_CastAbility() {
-        List<Enemy> enemies = List.of(getEnemy());
+        List<Unit> enemies = List.of(getEnemy());
         Position result = mage.castAbility(enemies);
         assertEquals(position, result);  // Assuming Mage ability doesn't change position
         assertTrue(mage.getMana() > 0);  // Check that mana was consumed
@@ -62,7 +63,7 @@ public class PlayerTest {
     // Tests for Rogue-specific abilities
     @Test
     public void testRogue_CastAbility() {
-        List<Enemy> enemies = List.of(getEnemy());
+        List<Unit> enemies = List.of(getEnemy());
         int energy = rogue.getEnergy();
         Position result = rogue.castAbility(enemies);
         assertEquals(position, result);  // Assuming Rogue ability doesn't change position
@@ -72,7 +73,7 @@ public class PlayerTest {
     // Tests for Warrior-specific abilities
     @Test
     public void testWarrior_CastAbility_NoCooldown() {
-        List<Enemy> enemies = List.of(getEnemy());
+        List<Unit> enemies = List.of(getEnemy());
         Position result = warrior.castAbility(enemies);
         assertEquals(position, result);  // Warrior doesn't change position
         assertEquals(3, warrior.getRemainingCooldown());  // Cooldown is set

@@ -43,14 +43,16 @@ public class EnemyTest {
     // Tests for Monster-specific behavior
     @Test
     public void testMonster_Tick_MoveTowardPlayer() {
-        Position newPosition = monster.tick(playerPosition);
+        Position newPosition = monster.tick(mage);
         assertNotEquals(monsterPosition, newPosition);  // Monster should move towards the player
     }
 
     @Test
     public void testMonster_Tick_NoMove_WhenOutOfVisionRange() {
+        Player player = new Mage("TestMage2", 100, 10, 5, 20, 30, 40, 3, 5);
         Position farPlayerPosition = new Position(20, 20);  // Player is far away
-        Position newPosition = monster.tick(farPlayerPosition);
+        player.initialize(farPlayerPosition, new FixedGenerator(), System.out::println, System.out::println);
+        Position newPosition = monster.tick(player);
         assertNotEquals(monsterPosition, newPosition);  // Monster should not move when player is out of vision range
     }
 
@@ -66,7 +68,7 @@ public class EnemyTest {
     @Test
     public void testTrap_Tick_VisibleState() {
         for (int i = 0; i < 3; i++) {  // Visibility time is 3 ticks
-            trap.tick(playerPosition);
+            trap.tick(mage);
             assertTrue(trap.isVisible());  // Trap should be visible during visibility period
         }
     }
@@ -74,7 +76,7 @@ public class EnemyTest {
     @Test
     public void testTrap_Tick_InvisibleState() {
         for (int i = 0; i < 8; i++) {  // After 3 ticks of visibility and 5 ticks of invisibility
-            trap.tick(playerPosition);
+            trap.tick(mage);
         }
         assertFalse(trap.isVisible());  // Trap should be invisible after visibility period
     }
@@ -82,22 +84,24 @@ public class EnemyTest {
     @Test
     public void testTrap_Tick_ResetTicks() {
         for (int i = 0; i < 8; i++) {
-            trap.tick(playerPosition);  // Running through the full cycle of visibility + invisibility
+            trap.tick(mage);  // Running through the full cycle of visibility + invisibility
         }
         assertEquals(8, trap.getTicksCount());
     }
 
     @Test
     public void testTrap_Tick_PlayerInRange() {
+        Player player = new Mage("TestMage2", 100, 10, 5, 20, 30, 40, 3, 5);
         playerPosition = new Position(4, 4);  // Player is in range (within 2 units)
-        Position result = trap.tick(playerPosition);
+        player.initialize(playerPosition, new FixedGenerator(), System.out::println, System.out::println);
+        Position result = trap.tick(player);
         assertEquals(playerPosition, result);  // Trap should "attack" the player by returning their position
     }
 
     @Test
     public void testTrap_Tick_PlayerOutOfRange() {
         playerPosition = new Position(10, 10);  // Player is out of range
-        Position result = trap.tick(playerPosition);
+        Position result = trap.tick(mage);
         assertEquals(trapPosition, result);  // Trap should remain in its original position
     }
 

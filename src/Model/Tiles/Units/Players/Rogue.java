@@ -1,6 +1,7 @@
 package Model.Tiles.Units.Players;
 
 import Model.Tiles.Units.Enemies.Enemy;
+import Model.Tiles.Units.Unit;
 import Utils.Callbacks.InputCallback;
 import Utils.Position;
 
@@ -28,11 +29,11 @@ public class Rogue extends Player {
     }
 
     @Override
-    public Position castAbility(List<Enemy> enemies) {
+    public Position castAbility(List<Unit> units) {
         if (energy >= cost) {
             energy -= cost;
-            List<Enemy> enemiesInRange = getEnemiesInRange(enemies, 2);
-            for (Enemy enemy : enemiesInRange) {
+            List<Unit> enemiesInRange = getEnemiesInRange(units, 2);
+            for (Unit enemy : enemiesInRange) {
                 combatConstAttack(this.attack, enemy);
             }
         }
@@ -40,8 +41,8 @@ public class Rogue extends Player {
     }
 
     @Override
-    public Position tick(char actionChar, List<Enemy> enemies) {
-        Position pos = super.tick(actionChar ,enemies);
+    public Position tick(char actionChar, List<Unit> units) {
+        Position pos = super.tick(actionChar ,units);
         energy = Math.min(energy + 10, MAX_ENERGY);
         return pos;
     }

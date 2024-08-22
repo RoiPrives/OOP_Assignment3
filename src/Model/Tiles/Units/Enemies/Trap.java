@@ -1,6 +1,7 @@
 package Model.Tiles.Units.Enemies;
 
 
+import Model.Tiles.Units.Players.Player;
 import Utils.Position;
 
 public class Trap extends Enemy{
@@ -27,7 +28,8 @@ public class Trap extends Enemy{
     }
 
     @Override
-    public Position tick(Position playerPos) {
+    public Position tick(Player player) {
+        Position playerPos = player.getPosition();
         visible = ticksCount < visibilityTime;
         if(ticksCount == (visibilityTime + invisibilityTime))
             ticksCount = 0;
