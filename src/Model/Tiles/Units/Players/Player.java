@@ -72,7 +72,7 @@ public abstract class Player extends Unit {
     }
 
     public void levelUp(){
-        this.experience -= EXPERIENCE_TO_LEVEL_UP * level;
+        this.experience = Math.abs(this.experience - EXPERIENCE_TO_LEVEL_UP * level);
         this.level++;
         this.health.increaseHealthPool(INCREASE_HEALTH_POOL * level);
         this.health.fillHealthPool();
@@ -123,10 +123,6 @@ public abstract class Player extends Unit {
 
     public int getExperience() {
         return this.experience;
-    }
-
-    public int getLevel() {
-        return this.level;
     }
 
     public int getHealthPool() {

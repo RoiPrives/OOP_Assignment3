@@ -46,7 +46,6 @@ public class Rogue extends Player {
         return pos;
     }
 
-
     @Override
     public String toString() {
         return super.toString() + " Energy " + this.energy + " Cost " + this.cost;

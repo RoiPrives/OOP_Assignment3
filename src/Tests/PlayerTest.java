@@ -38,6 +38,7 @@ public class PlayerTest {
         enemy = new Monster('E', "TestEnemy", 150, 5, 2,7,0);  // Example enemy initialization
 
 
+
         mage.initialize(position, new FixedGenerator(), System.out::println, cli.getMessageCallback());
         rogue.initialize(position, new FixedGenerator(), System.out::println, cli.getMessageCallback());
         warrior.initialize(position, new FixedGenerator(),System.out::println, cli.getMessageCallback());
@@ -46,7 +47,9 @@ public class PlayerTest {
 
     public Enemy getEnemy() {
         Enemy testEnemy = new Monster('E', "TestEnemy", 1, 5, 2,7,5);
+
         testEnemy.initialize(new Position(1,0),new FixedGenerator(), System.out::println, System.out::println);
+
         return testEnemy;
     }
 

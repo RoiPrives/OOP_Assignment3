@@ -120,7 +120,9 @@ public abstract class Unit extends Tile {
     }
 
     public abstract void notifyDeath();
-
+    public int getHealth(){
+        return this.health.getHealthAmount();
+    }
 
     @Override
     public String toString() {

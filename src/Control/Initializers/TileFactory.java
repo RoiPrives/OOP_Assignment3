@@ -4,7 +4,7 @@ import Model.Tiles.Tile;
 import Model.Tiles.Units.Enemies.Enemy;
 import Model.Tiles.Units.Enemies.Monster;
 import Model.Tiles.Units.Enemies.Trap;
-import Model.Tiles.Units.Players.Player;
+import Model.Tiles.Units.Players.*;
 import Model.Tiles.Wall;
 import Utils.Callbacks.DeathCallbackEnemy;
 import Utils.Callbacks.DeathCallbackPlayer;
@@ -12,9 +12,6 @@ import Utils.Callbacks.MessageCallback;
 import Utils.Generators.Generator;
 import Utils.Position;
 import java.util.Arrays;
-import Model.Tiles.Units.Players.Warrior;
-import Model.Tiles.Units.Players.Mage;
-import Model.Tiles.Units.Players.Rogue;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -28,7 +25,8 @@ public class TileFactory {
             () -> new Mage("Melisandre", 100, 5, 1, 300, 30, 15, 5, 6),
             () -> new Mage("Thoros of Myr", 250, 25, 4, 150, 20, 20, 3, 4),
             () -> new Rogue("Arya Stark", 150, 40, 2, 20),
-            () -> new Rogue("Bronn", 250, 35, 3, 50)
+            () -> new Rogue("Bronn", 250, 35, 3, 50),
+            () -> new Hunter("Ygritte",220, 30, 2,6)
     );
 
     private static final Map<Character, Supplier<Enemy>> enemyTypes = Map.ofEntries(
