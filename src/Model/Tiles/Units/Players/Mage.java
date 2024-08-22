@@ -61,4 +61,10 @@ public class Mage extends Player{
     public String toString() {
         return super.toString() + "\tMana: " + currentMana  + "/" + manaPool + "\tSpell Power: "  + spellPower;
     }
+
+    public int getMana() {
+        return this.currentMana;
+    }
+
+
 }
