@@ -61,7 +61,7 @@ public abstract class Enemy extends Unit {
         deathCallback.onDeath(this);
     }
 
-    public abstract Position tick(Position playerPos);
+    public abstract Position tick(Player player);
 
 
 

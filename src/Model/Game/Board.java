@@ -8,10 +8,7 @@ import Utils.Callbacks.DeathCallbackEnemy;
 import Utils.Callbacks.DeathCallbackPlayer;
 import Utils.Position;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class Board {
     private Map<Position, Tile> board;
@@ -75,7 +72,7 @@ public class Board {
 
     public void playerTick(char userAction){
         Position playerPosition = new Position(player.getPosition());
-        Position newPos = this.player.tick(userAction, this.enemies);
+        Position newPos = this.player.tick(userAction, new ArrayList<>(this.enemies));
         Position finalPos = this.player.interact(this.board.get(newPos));
         board.put(playerPosition, board.get(finalPos));
         board.put(finalPos, this.player);
@@ -83,7 +80,7 @@ public class Board {
 
     public void enemyTick(Enemy enemy){
         Position enemyPos = new Position(enemy.getPosition());
-        Position newPos = enemy.tick(this.player.getPosition());
+        Position newPos = enemy.tick(this.player);
         Position finalPos = enemy.interact(this.board.get(newPos));
         board.put(enemyPos, board.get(finalPos));
         board.put(finalPos, enemy);

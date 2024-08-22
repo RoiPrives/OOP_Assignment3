@@ -1,5 +1,6 @@
 package Model.Tiles.Units.Players;
 import Model.Tiles.Units.Enemies.Enemy;
+import Model.Tiles.Units.Unit;
 import Utils.Callbacks.InputCallback;
 import Utils.Position;
 
@@ -24,13 +25,13 @@ public class Mage extends Player{
         this.currentMana = manaPool/4;
     }
 
-    public Position castAbility(List<Enemy> enemies){
+    public Position castAbility(List<Unit> units){
         if(currentMana >= manaCost){
             currentMana -= manaCost;
             int hits  = 0;
-            List<Enemy> enemiesInRange = getEnemiesInRange(enemies, abilityRange);
+            List<Unit> enemiesInRange = getEnemiesInRange(units, abilityRange);
             while (hits < hitsCount && !enemiesInRange.isEmpty()) {
-                Enemy enemyToAttack = enemiesInRange.get(generator.generate(enemiesInRange.size()));
+                Unit enemyToAttack = enemiesInRange.get(generator.generate(enemiesInRange.size()));
                 this.combatConstAttack(spellPower, enemyToAttack);
                 if (enemyToAttack.alive())
                     enemiesInRange.add(enemyToAttack);
@@ -50,7 +51,7 @@ public class Mage extends Player{
     }
 
     @Override
-    public Position tick(char actionChar, List<Enemy> enemies){
+    public Position tick(char actionChar, List<Unit> enemies){
         Position pos = super.tick(actionChar, enemies);
         currentMana = Math.min(currentMana + level, manaPool);
         return pos;
